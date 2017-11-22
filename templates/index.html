@@ -1,0 +1,323 @@
+{% load staticfiles %}
+{% load i18n mptt_tags %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]><html lang="ru" class="lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html lang="ru" class="lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]><html lang="ru" class="lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="ru">
+<!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>MagazineUA</title>
+     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Carousel Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap-3.3.7/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap-3.3.7/js/bootstrap.js' %}" rel="stylesheet">
+    <link href="{% static 'libs/fancybox/jquery.fancybox.css' %}" rel="stylesheet">
+
+    <!-- Font-awesome-4.2.0 CSS -->
+    <link rel="stylesheet" href="{% static 'libs/font-awesome-4.2.0/css/font-awesome.min.css' %}">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{% static 'bootstrap-3.3.7/css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'bootstrap-3.3.7/css/carousel.css' %}" rel="stylesheet">
+
+    <title>Educational materials</title>
+    <!--<link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">
+	<link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+	<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="{% static 'libs/jquery/jquery-1.11.1.min.js' %}"></script>
+
+
+    <meta name="description" content="" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" href="favicon.png" />
+	<link rel="stylesheet" href="{% static 'libs/font-awesome-4.2.0/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'libs/fancybox/jquery.fancybox.css' %}">
+	<link rel="stylesheet" href="{% static 'libs/owl-carousel/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static 'libs/countdown/jquery.countdown.css' %}">
+	<link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+	<link rel="stylesheet" href="{% static 'css/media.css' %}">
+
+</head>
+
+
+	<!--<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-2195009-2', 'auto');
+      ga('send', 'pageview');
+
+      ga('create', 'UA-2195009-27', 'auto', {name: "foundation"});
+      ga('foundation.send', 'pageview');
+
+    </script>-->
+
+<!-- NAVBAR
+================================================== -->
+
+    <body>
+
+     <div class="navbar-wrapper">
+         <div class="container">
+
+            <nav class="navbar navbar-inverse navbar-static-top">
+              <div class="container">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                </div>
+                 <div id="navbar" class="navbar-collapse collapse">
+                  <ul class="nav navbar-nav">
+                    <li><a href="/home/">ГЛАВНАЯ</a></li>
+                    <li><a href="/">КАТАЛОГ</a></li>
+                    <!--<li><a href="/admin/">АДМИН</a></li>-->
+                    <li><a href="/auth/register/">РЕГИСТРАЦИЯ</a></li>
+                    <li>{% if username %}
+                            <a href="/auth/logout/">Выход({{ username }})</a>
+                        {% else %}
+                            <a href="/auth/login/">Вход</a>
+                        {% endif %}
+                    </li>
+                  </ul>
+                  <form action="/brands/" method="post" class="navbar-form navbar-right" role="form">
+                          {% csrf_token %}
+                          {{ form_brands }}
+                        <input type="submit" class="btn btn-success" value="Поиск">
+                  </form>
+
+                  <!--<form action="/keyword/" method="post" class="navbar-form navbar-right" role="form">
+                          {% csrf_token %}
+                          {{ form_keywords }}
+                        <button type="submit" class="btn btn-success">Поиск</button>
+                  </form> -->
+                </div>
+              </div>
+            </nav>
+         </div>
+     </div>
+
+         <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <img class="first-slide" src="/static/images/Nike2.jpg" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>MagazineUA</h1>
+              <p><br /></p>
+              <p><a class="btn btn-success" href="#" role="button">Sign up today</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="second-slide" src="/static/images/Reebok.jpg" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>MagazineUA</h1>
+              <p></p>
+              <p><a class="btn btn-success" href="#" role="button">Learn more</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="third-slide" src="/static/images/Adidas.jpg" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>MagazineUA</h1>
+              <p></p>
+              <p><a class="btn btn-success" href="#" role="button">Browse gallery</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+      <!-- Three columns of text below the carousel -->
+
+    <section class="container marketing">
+        <div class="container">
+            <div class="row">
+                    {% if username %}
+                    <div class="navbar navbar-inverse">
+                        <div class="container">
+                            {% with total_items=cart|length %}
+                            {% if cart|length > 0 %}
+                            <h4>Ваша корзина:</h4><a href="{% url "cart:CartDetail" %}">
+                            <h4>{{ total_items }} тов. на суму {{ cart.get_total_price }} руб.</h4>
+                               </a>
+                            {% else %}
+                            <h4>В вашей корзине нет товаров</h4>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="col-sm-3 blog-main">
+                        <div class="sidebar-module">
+                            <h2 class="text-center">MagazineUA</h2>
+                            <div class="text-center">
+                                <a class="btn btn-success" href="#" role="button">Facebook</a>
+                                <a class="btn btn-success" href="#" role="button">Twitter</a>
+                                <a class="btn btn-success" href="#" role="button">VK</a>
+                            </div>
+
+                            <hr>
+
+                             <p id="menu">Categories:</p>
+                                        <ul class="list-unstyled" id="list">
+                                            {% recursetree projects %}
+                                                <li>
+                                                    <a href="/category/get/{{ node.id }}/" title="{% blocktrans with project=node %} Show all entries in {{ project }}{% endblocktrans %}">{{ node }}</a>
+                                            {% if not node.is_leaf_node %}
+                                                    <ul class="project-children project-{{ node.slug }}">
+                                                    {{ children }}
+                                                    </ul>
+                                            {% endif %}
+                                                </li>
+                                            {% endrecursetree %}
+                                            {% if not projects %}
+                                                <li>
+                                                    {% trans "Not projects yet." %}
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+
+                            <p id="menu1">Authors:</p>
+                                        <ul class="list-unstyled" id="list1">
+                                            {% for author in authors %}
+                                                <li><a href="/author/{{ author.id }}/">{{ author }}</a></li>
+                                            {% endfor %}
+
+                                        </ul>
+                        </div>
+                    </div>
+
+                <div class="col-sm-9 blog-main">
+                    {% block products %}{% endblock %}
+                    {% block product %}{% endblock %}
+                    {% block product_cat %}{% endblock %}
+                    {% block login %}{% endblock %}
+                    {% block register %}{% endblock %}
+                    {% block content %}{% endblock %}
+                    {% block title %}{% endblock %}
+                    {% block detail %}{% endblock %}
+                </div>
+            </div>
+
+        </div>
+    </section><!-- /.container -->
+
+
+
+    <!--
+
+            <div class="medium-3 columns" data-sticky-container>
+                <div class="sticky" data-sticky data-anchor="content">
+                    <ul class="menu soc_buttons">
+                        <li><a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-youtube-square" aria-hidden="true"></i></a></li>
+                    </ul>
+
+                    <ul class="menu">
+                        <form action="/brends/" method="post">
+                           {% csrf_token %}
+                                {{ form_keywords }}
+                                <input type="submit" class="button" value="Поиск">
+                        </form>
+                    </ul>
+
+                </div>
+            </div>
+    </div>-->
+
+    <div class="container marketing">
+      <hr class="featurette-divider">
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2016 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      </footer>
+
+    </div><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/piter_js.js' %}"></script>
+    <script src="{% static 'js/jQuery-3.2.0.js' %}"></script>
+    <script src="bower_components/jquery/dist/jquery.js?hash=ef84e29a5b44f41910594b8b5aa2b30a"></script>
+    <script src="bower_components/what-input/what-input.js?hash=0c7403b1a0ffe96d1d7e5677508b50da"></script>
+    <!--<script src="bower_components/foundation-sites/dist/foundation.js?hash=5fbcda3d2a490afda6bfc2644c2cc988"></script> -->
+    <script src="js/app.js?hash=f73a84303209b95c8fedd1c4ca5de1c7"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!--<script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script> -->
+
+    <script src="{% static 'libs/jquery/jquery-1.11.1.min.js' %}"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="../../assets/js/vendor/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+    <!--<script>
+      $(document).foundation();
+    </script>
+    <script type="text/javascript" src="https://intercom.zurb.com/scripts/zcom.js"></script>-->
+</body>
+</html>

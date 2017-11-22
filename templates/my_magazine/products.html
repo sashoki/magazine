@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load i18n mptt_tags %}
+
+{% block products %}
+    {% for product in products %}
+
+                    <div class="col-sm-3">
+                        {% if product.product_img %}
+                        <p><a href="/products/get/{{ product.id }}/"><img class="thumbnail" src="{{ MEDIA_URL }}{{ product.product_img.url }}" width="150" height="100"/></a></p>
+                        {% else %}
+                        <img class="thumbnail" src="https://placehold.it/150x100">
+                        {% endif %}
+                        <h4><a href="/products/get/{{ product.id }}/">{{ product.product_title }}</a></h4>
+                        <h5>{{ product.product_price }} гр.</h5>
+                        <p>{% autoescape off %}{{ product.product_text_min }}{% endautoescape off %}</p>
+                        <a class="btn btn-success" href="/products/get/{{ product.id }}/" role="button">Посмотреть товар >></a>
+                        <hr>
+                    </div>
+
+    {% endfor %}
+    {% if products = 20 %}
+                    <div class="col-sm-12 text-center">
+                          <ul class="pagination">
+                              {% if articles.has_previous %}
+                                    <li class="page-link"><a href="/page/{{ products.previous_page_number }}/">&laquo;</a></li>
+                              {% else %}
+                                    <li class="page-item disabled"><a href="#">&laquo;</a></li>
+                              {% endif %}
+                              {% for page in products.paginator.page_range %}
+                                {% if page == products.number %}
+                                    <li class="page-item active"><a href="/page/{{ page }}/">{{ page }}</a></li>
+                                {% else %}
+                                    <li><a href="/page/{{ page }}/" aria-label="{{ page }}">{{ page }}</a></li>
+                                {% endif %}
+                              {% endfor %}
+                              {% if products.has_next %}
+                                    <li class="page-link"><a href="/page/{{ products.next_page_number }}/" aria-label="Next page">&raquo;</a></li>
+                              {% else %}
+                                    <li class="page-item disabled"><a href="">&raquo;</a></li>
+                              {% endif %}
+                          </ul>
+                    </div>
+    {% endif %}
+
+
+{% endblock %}

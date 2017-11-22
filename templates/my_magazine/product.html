@@ -1,0 +1,62 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+{% load mptt_tags %}
+{% load i18n mptt_tags %}
+
+{% block product %}
+
+<h4>Из категории: <a href="/category/get/{{ product.category.id }}/"> {{ product.category }}</a></h4>
+<h4>Автор: <a href="/author/{{ product.author.id }}/">{{ product.author }}</a></h4>
+
+            <div class="col-sm-6">
+                {% if product.product_img %}
+                    <img src="{{ MEDIA_URL }}{{ product.product_img.url }}" width="350" height="200"  />
+                {% endif %}
+            </div>
+
+            <div class="col-sm-6">
+                <h4><a href="{% url 'products' %}">{{ product.product_title }}</a></h4>
+                <h4>{{ product.product_price }} гр.</h4>
+                {% if username %}
+                <form action="{% url "cart:CartAdd" product.id %}" method="post">
+                    {{ cart_product_form }}
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-success" value="Добавить в корзину">
+                </form
+                {% endif %}
+                <p>{% autoescape off %}{{ product.product_text }}{% endautoescape off %}</p>
+                {% if product.product_video %}
+                    <iframe width="560" height="315" src="{{ product.product_video }}" frameborder="0" allowfullscreen></iframe>
+                {% endif %}
+                <h6>Есть в наличии: {{ product.product_available }}</h6>
+
+            </div>
+
+
+            <div class="col-sm-12">
+                <hr>
+                <p>Кометрарии: {{ n_comments }} </p>
+                <hr>
+                <div class="col-sm-6">
+                    {% for comment in comments %}
+                        <p>{{ comment.comments_text }}</p>
+                        <h6 align="right">{{ comment.comments_author.username }} - {{ comment.comments_date }}</h6>
+                    <hr>
+                </div>
+
+                <!--<div height="1" style=" border-bottom: 1px dotted #000033;" >-->
+                <div class="col-sm-6">
+
+                    {% endfor %}
+                    {% if username %}
+                        <form action="/products/addcomment/{{ product.id }}/" method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                            <input type="submit" class="btn btn-success" value="Добавить коментарий">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+
+{% endblock %}

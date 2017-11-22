@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+{% load mptt_tags %}
+{% load i18n mptt_tags %}
+
+
+
+{% block content %}
+  <div class="col-sm-12 text-center">
+    <h1>Спасибо за заказ</h1>
+    <p>Идентификатор вашего заказа: {{ order.id }}</p>
+    <a class="btn btn-success" href="{% url 'products' %}" role="button">Вернуться в магазин</a>
+  </div>
+{% endblock %}

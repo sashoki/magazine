@@ -1,0 +1,81 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+{% load mptt_tags %}
+{% load i18n mptt_tags %}
+
+{% block content %}
+  <h1>Ваша корзина товаров</h1>
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr class="success">
+        <th>Изображение</th>
+        <th>Продукт</th>
+        <th>Количество</th>
+        <th>Удалить</th>
+        <th>Цена единици товара</th>
+        <th>Полная цена</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+        {% with product=item.product %}
+          <tr>
+            <td>
+              <a href="{{ product.get_absolute_url }}">
+                {% if product.product_img %}
+                   <p><a href="/products/get/{{ product.id }}/"><img class="thumbnail" src="{{ MEDIA_URL }}{{ product.product_img.url }}" width="150" height="100"/></a></p>
+                {% else %}
+                   <img class="thumbnail" src="https://placehold.it/150x100">
+                {% endif %}
+              </a>
+            </td>
+            <td>{{ product.product_title }}</td>
+            <td>
+              <form action="{% url "cart:CartAdd" product.id %}" method="post" class="add">
+                    {{ item.update_quantity_form.quantity }}
+                    {{ item.update_quantity_form.update }}
+                    {% csrf_token %}
+                <input type="submit" value="Обновить">
+              </form>
+            </td>
+            <td><a href="{% url "cart:CartRemove" product.id %}">Удалить</a></td>
+            <td class="num">{{ item.price }} гр.</td>
+            <td class="num">{{ item.total_price }} гр.</td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+        {% if cart.cupon %}
+          <tr class="subtotal">
+              <td>Сумма без скидки</td>
+              <td colspan="4"></td>
+              <td>{{ cart.get_total_price }}</td>
+            </tr>
+            <tr>
+              <td>
+                "{{ cart.cupon.code }}" купон на ({{ cart.cupon.discount }} % ниже)
+              </td>
+              <td colspan="4"></td>
+              <td class="num discount">- {{ cart.get_discount|floatformat:"2" }} гр.</td>
+            </tr>
+        {% endif %}
+        <tr class="info">
+          <td>Всего</td>
+          <td colspan="4"></td>
+          <td class="num">{{ cart.get_total_price_after_discount|floatformat:"2" }} гр.</td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p>Применить купон</p>
+  <form action="{% url "cupon:apply" %}" method="post" class="add">
+    {% csrf_token %}
+    {{ cupon_apply_form }}
+    <input type="submit" value="Обновить">
+  </form>
+
+  <p class="text-right">
+    <a href="{% url 'products' %}" class="btn btn-success">Продолжить Шопинг</a>
+    <a href="{% url 'orders:OrderCreate' %}" class="btn btn-success">Оформить заказ</a>
+  </p>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% load embed_video_tags %}
+{% load mptt_tags %}
+{% load i18n mptt_tags %}
+
+{% block content %}
+        <h2>Автор: {{ author_s.name }}</h2>
+        {% if author_s.author_image %}
+            <p><img class="thumbnail" src="{{ MEDIA_URL }}{{ author_s.author_image.url }}" width="350"/></p>
+        {% endif %}
+
+        {% for product in products %}
+        <div class="col-sm-3">
+            <h5><a href="{% url 'products' %}">{{ product.product_title }}</a></h5>
+            <h5>Категория: <a href="/category/get/{{ product.category.id }}/"> {{ product.category }}</a></h5>
+                {% if product.product_img %}
+                    <p><a href="/products/get/{{ product.id }}/"><img class="thumbnail" src="{{ MEDIA_URL }}{{ product.product_img.url }}" width="150" height="100"/></a></p>
+                {% endif %}
+            <h5>{{ product.product_title }}</h5>
+            <h5>{{ product.product_price }} гр.</h5>
+            <a class="btn btn-success" href="/products/get/{{ product.id }}/" role="button">Buy Now</a>
+            <hr>
+        </div>
+        {% endfor %}
+{% endblock %}

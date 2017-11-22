@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+{% load embed_video_tags %}
+{% load staticfiles %}
+{% load i18n mptt_tags %}
+
+{% block product_cat %}
+
+<h4> Категория: {{ category }}</h4>
+    {% for product in category_products %}
+
+        <div class="col-sm-3">
+            <h5>Автор: <a href="/author/{{ product.author.id }}/">{{ product.author }}</a></h5>
+            <h5><a href="{% url 'products' %}">{{ product.product_title }}</a></h5>
+                {% if product.product_img %}
+                    <p><a href="/products/get/{{ product.id }}/"><img class="thumbnail" src="{{ MEDIA_URL }}{{ product.product_img.url }}" width="150" height="100"/></a></p>
+                {% else %}
+                    <img class="thumbnail" src="https://placehold.it/150x100">
+                {% endif %}
+            <h5>{{ product.product_title }}</h5>
+            <h5>{{ product.product_price }} гр.</h5>
+            <a class="btn btn-success" href="/products/get/{{ product.id }}/" role="button">Посмотреть товар >></a> <a href="/products/addlike/{{ product.id }}/"><img src="{% static 'images/like.jpg' %}" width="25px" height="25px"></a> {{ product.product_like }}</p>
+            <hr>
+        </div>
+
+    {% endfor %}
+{% endblock %}
+

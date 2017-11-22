@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+{% load mptt_tags %}
+{% load i18n mptt_tags %}
+
+{% block content %}
+  <h1>Оформление заказа</h1>
+  <div class="col-sm-6">
+      <h2>Заполните форму</h2>
+      <form class="order-form" action="." method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+      <input type="submit" class="btn btn-success" value="Отправить">
+      </form>
+  </div>
+
+<div class="col-sm-6">
+      <h2>Ваш заказ</h2>
+      <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="success">
+              <th>Продукт</th>
+              <th class="text-center">Количество</th>
+              <th class="text-center">Цена</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart %}
+                <tr>
+                  <td>{{ item.product.product_title }}</td>
+                  <td class="text-center">{{ item.quantity }}</td>
+                  <td class="text-center">{{ item.total_price }} гр.</td>
+                </tr>
+            {% endfor %}
+            {% if cart.cupon %}
+                <tr>
+                  <td>{{ cart.cupon.code }}</td>
+                  <td class="text-center">(на {{ cart.cupon.discount }}% меньше)</td>
+                  <td class="text-center">{{ cart.get_discount|floatformat:"2"}} гр.</td>
+                </tr>
+            {% endif %}
+          <tr class="info">
+                  <td>Всего:</td>
+                  <td colspan="1"></td>
+                  <td class="num text-center">{{ cart.get_total_price_after_discount|floatformat:"2"}} гр.</td>
+                </tr>
+          </tbody>
+        </table>
+ </div>
+
+{% endblock %}

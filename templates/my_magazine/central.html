@@ -1,0 +1,172 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load embed_video_tags %}
+
+
+{% block central %}
+
+      <div class="row">
+        <div class="col-sm-8 blog-main">
+          {% block login %}{% endblock %}
+          {% block register %}{% endblock %}
+          {% block home %}{% endblock %}
+          {% block specialists %}{% endblock %}
+          {% block specialist %}{% endblock %}
+          {% block heroes %}{% endblock %}
+          {% block children %}{% endblock %}
+          {% block about_us %}{% endblock %}
+          {% block consultants %}{% endblock %}
+          {% block cell %}{% endblock %}
+          {% block fpartners %}{% endblock %}
+          {% block dpartners %}{% endblock %}
+          {% block press %}{% endblock %}
+          {% block contacts %}{% endblock %}
+        </div>
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module">
+            <h4>Ми у соціальних мережах:</h4>
+            <ol class="list-unstyled">
+              <li><a href="#"><i class="fa fa-vk" aria-hidden="true"></i> Vkontakte</a></li>
+              <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+              <li><a href="#"><i class="fa fa-youtube-square" aria-hidden="true"></i> Yotube</a></li>
+              <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
+            </ol>
+          </div>
+
+
+            <div class="sidebar-module">
+                <h4>Archives</h4>
+                <ol class="list-unstyled">
+                  <li><a href="#">March 2014</a></li>
+                  <li><a href="#">February 2014</a></li>
+                  <li><a href="#">January 2014</a></li>
+                  <li><a href="#">December 2013</a></li>
+                  <li><a href="#">November 2013</a></li>
+                  <li><a href="#">October 2013</a></li>
+                  <li><a href="#">September 2013</a></li>
+                  <li><a href="#">August 2013</a></li>
+                  <li><a href="#">July 2013</a></li>
+                  <li><a href="#">June 2013</a></li>
+                  <li><a href="#">May 2013</a></li>
+                  <li><a href="#">April 2013</a></li>
+                </ol>
+            </div>
+      </div>
+        </div>
+
+
+<br>
+    {% if username %}
+    <div class="row columns">
+        <nav aria-label="You are here:" role="navigation">
+            <ul class="breadcrumbs">
+                <li><h5><a href="#">Ваша корзина пуста</a></h5></li>
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="medium-6 large-5 columns">
+            <h3>MagazineUA </h3>
+            <p>Современные товары для всей семьи</p>
+            <p>Товары от Мировых производителей</p>
+            <p>Удобная доставка по всей стране</p>
+            <p>Лучшая цена, идеальное качество</p>
+
+             <p id="menu">Categories:</p>
+                        <ul class="project-root" id="list">
+							{% recursetree projects %}
+								<li>
+									<a href="/category/get/{{ node.id }}/" title="{% blocktrans with project=node %} Show all entries in {{ project }}{% endblocktrans %}">{{ node }}</a>
+							{% if not node.is_leaf_node %}
+									<ul class="project-children project-{{ node.slug }}">
+									{{ children }}
+									</ul>
+							{% endif %}
+								</li>
+							{% endrecursetree %}
+							{% if not projects %}
+								<li>
+									{% trans "Not projects yet." %}
+								</li>
+							{% endif %}
+						</ul>
+
+            <p id="menu1">Authors:</p>
+                        <ul id="list1">
+                            {% for author in authors %}
+                                <li><a href="/author/{{ author.id }}/">{{ author }}</a></li>
+                            {% endfor %}
+
+                        </ul>
+            <div class="small secondary expanded button-group">
+                <a class="button">Facebook</a>
+                <a class="button">Twitter</a>
+                <a class="button">VK</a>
+            </div>
+        </div>
+
+        <div class="medium-6 columns">
+                <img class="thumbnail" src="https://placehold.it/650x350">
+            <div class="row small-up-4">
+                <div class="column">
+                    <img class="thumbnail" src="https://placehold.it/250x200">
+                </div>
+                <div class="column">
+                    <img class="thumbnail" src="https://placehold.it/250x200">
+                </div>
+                <div class="column">
+                    <img class="thumbnail" src="https://placehold.it/250x200">
+                </div>
+                <div class="column">
+                    <img class="thumbnail" src="https://placehold.it/250x200">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="column row">
+        <hr>
+            <ul class="tabs" data-tabs id="example-tabs">
+                <li class="tabs-title is-active"><a href="#panel2">Similar Products</a></li>
+                <li class="tabs-title"><a href="#panel1" aria-selected="true">Reviews</a></li>
+            </ul>
+        <div class="tabs-content" data-tabs-content="example-tabs">
+            <div class="tabs-panel" id="panel1">
+                <h4>Reviews</h4>
+                <div class="media-object stack-for-small">
+                    <div class="media-object-section">
+                        <img class="thumbnail" src="https://placehold.it/200x200">
+                    </div>
+                    <div class="media-object-section">
+                        <h5>Mike Stevenson</h5>
+                        <p>I'm going to improvise. Listen, there's something you should know about me... about inception. An idea is like a virus, resilient, highly contagious. The smallest seed of an idea can grow. It can grow to define or destroy you.</p>
+                    </div>
+                </div>
+                <label>
+                My Review
+                <textarea placeholder="None"></textarea>
+                </label>
+                <button class="button">Submit Review</button>
+            </div>
+
+            <div class="tabs-panel is-active" id="panel2">
+                <div class="row medium-up-3 large-up-5">
+
+                    {% block products %}{% endblock %}
+                    {% block product %}{% endblock %}
+                    {% block product_cat %}{% endblock %}
+                    {% block login %}{% endblock %}
+                    {% block register %}{% endblock %}
+                    {% block content %}{% endblock %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
